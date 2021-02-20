@@ -65,10 +65,22 @@ class FrontendController extends Controller
     private function detectPayLine(array $reels, array $symbolIds, $columns = 5, $rows = 3) 
     {
         $symblosCount = count($symbolIds);
-        $drawPayLine = '';
+        
         for ($i=0; $i < $symblosCount; $i++) { 
             $currentSymbol = $symbolIds[$i];
             if ($this->allRowsMatchSymbol($reels, $currentSymbol, $columns, $rows)) {
+                return true;
+            }
+            if ($this->diagonalArrowRowsMatchSymbol($reels, $currentSymbol, $columns, $rows)) {
+                return true;
+            }
+            if ($this->diagonalArrowRowsMatchSymbol($reels, $currentSymbol, $columns, $rows, 'up')) {
+                return true;
+            }
+            if ($this->symbolsFormAnUmbrellaShape($reels, $currentSymbol, $columns, $rows)) {
+                return true;
+            }
+            if ($this->symbolsFormAnUmbrellaShape($reels, $currentSymbol, $columns, $rows, 'up')) {
                 return true;
             }
         }
@@ -91,25 +103,111 @@ class FrontendController extends Controller
         return false;
     }
 
-    // private function getSymbolPaylines(int $symbolId, $reels, $columns = 5, $rows = 3) : string
-    // {
-    //     for ($i=0; $i < $rows; $i++) { 
-    //         for ($j=0; $j < $columns; $j++) { 
-    //             if () {
-    //                 //
-    //             }
-    //         }
-    //     }
-    // 1-2-3-4-5 
-    // 6-7-8-9-10
-    //     // 11-12-13-14-15, 
-    //    
-    //     //1-7-13-9-5, 
-    //     // 11-7-3-9-15, 6-2-3-4-10, 
-    //     // 6-12-13-14-10, 1-2-8-14-15,
-    //     // 11-12-8-4-5
+    private function diagonalArrowRowsMatchSymbol($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') {
+        $rowCount = count($rows);
+        $leftDiagonal = [];
+        $rightDiagonal = [];
+        if (strtolower($arrowPosition) === 'up') {
+            $reels = array_reverse($reels);
+            //$reels = collect($reels)->reverse()->all();
+        }
 
-    //     return '';
-    // }
+        for ($i=0; $i < $rowCount; $i++) {
+            $colIndex = 0;
+            array_push($leftDiagonal, $reels[$i][$colIndex]);
+            array_push($rightDiagonal, $reels[$i][($columns-($i+1))]);
+            $colIndex = $colIndex + 1;
+        }
+
+        $allIdsMatched = collect($leftDiagonal)
+            ->merge($rightDiagonal)
+            ->every(function ($id, $key) use($symbolId) {
+            return $id == $symbolId;
+        });
+
+        if ($allIdsMatched) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function symbolsFormAnUmbrellaShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
+    {
+        $rowCount = count($rows) - 1;
+        $matchedSymbols = [];
+        $columnCount = $columns - 1;
+        if (strtolower($arrowPosition) === 'up') {
+            $reels = array_reverse($reels);
+            //$reels = collect($reels)->reverse()->all();
+        }
+
+        for ($i=0; $i < $rowCount; $i++) {
+            $colIndex = 0;
+            if ($i == 0) {
+                $firstSymbol = $reels[$i][$colIndex];
+                $lastSymbol = $reels[$i][$columnCount];
+                array_push($matchedSymbols, $firstSymbol);
+                array_push($matchedSymbols, $lastSymbol);
+            } else {
+                $row = $reels[$i];
+                unset($row[$colIndex]);
+                unset($row[$columnCount]);
+                array_merge($matchedSymbols, $row);
+            }
+        }
+
+        $allIdsMatched = collect($matchedSymbols)
+            ->every(function ($id, $key) use($symbolId) {
+            return $id == $symbolId;
+        });
+
+        if ($allIdsMatched) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private function symbolsFormAZeeShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
+    {
+        $rowCount = count($rows) - 1;
+        $matchedSymbols = [];
+        $columnCount = $columns - 1;
+        if (strtolower($arrowPosition) === 'up') {
+            $reels = array_reverse($reels);
+            //$reels = collect($reels)->reverse()->all();
+        }
+
+        for ($i=0; $i < $rowCount; $i++) {
+            switch ($i) {
+                case 0:
+                    [$firstSymbol, $secondSymbol] = $reels[$i];
+                    array_merge($matchedSymbols, [$firstSymbol, $secondSymbol]);
+                    break;
+                case 1:
+                    array_push($matchedSymbols, $reels[$i][2]);
+                    break;
+                case 2:
+                    [,,,$fourthSymbol, $fifthSymbol] = $reels[$i];
+                    array_merge($matchedSymbols, [$fourthSymbol, $fifthSymbol]);
+                    break;
+                default:
+                    continue;
+                    break;
+            }
+        }
+
+        $allIdsMatched = collect($matchedSymbols)
+            ->every(function ($id, $key) use($symbolId) {
+            return $id == $symbolId;
+        });
+
+        if ($allIdsMatched) {
+            return true;
+        }
+
+        return false;
+    }
 
 }
