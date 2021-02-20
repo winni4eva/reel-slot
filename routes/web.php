@@ -34,7 +34,8 @@ Route::prefix('backstage')->middleware('setActiveCampaign')->group(function () {
         });
 
         // Games
-        Route::resource('games', 'GamesController'); //export
+        Route::resource('games', 'GamesController');
+        Route::get('create-game', 'GamesController@store');
 
     });
 });

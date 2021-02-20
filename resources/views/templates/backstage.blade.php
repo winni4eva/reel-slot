@@ -45,7 +45,11 @@
         <div class="col-span-6">
             @if($activeCampaign)
                 {{ $activeCampaign->name }}<br>
-                <a href="{{ secure_url($activeCampaign->slug.'?a=username') }}" target="_blank" class="text-xs">{{ secure_url($activeCampaign->slug.'?a=username') }}</a>
+                <a 
+                    href="{{ secure_url($activeCampaign->slug.'?a='. auth()->user()->name . '&spins=4') }}" 
+                    target="_blank" 
+                    class="text-xs">{{ secure_url($activeCampaign->slug.'?a='. auth()->user()->name . '&spins=4') }}
+                </a>
             @endif
         </div>
         <div class="col-span-6 text-right">

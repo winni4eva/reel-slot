@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Illuminate\Http\Request;
 
 class GamesController extends BackstageController
 {
@@ -27,7 +28,6 @@ class GamesController extends BackstageController
      */
     public function index()
     {
-        logger('Redireting TO Index Games');
         return view('backstage.games.index');
     }
 
@@ -48,9 +48,10 @@ class GamesController extends BackstageController
      *
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
-        //
+        logger('Game created successfully');
+        logger($request->all());
     }
 
     /**

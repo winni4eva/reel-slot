@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddGlobalWeightToCampaigns extends Migration
+class AddSlugToCampaignsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddGlobalWeightToCampaigns extends Migration
     public function up()
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->integer('global_weight')->default(0)->after('end_date');
+            $table->string('slug')->default('')->after('global_weight');
         });
     }
 
@@ -26,7 +26,7 @@ class AddGlobalWeightToCampaigns extends Migration
     public function down()
     {
         Schema::table('campaigns', function (Blueprint $table) {
-            $table->dropColumn('global_weight');
+            $table->dropColumn('slug');
         });
     }
 }
