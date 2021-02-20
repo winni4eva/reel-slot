@@ -29,9 +29,12 @@ Route::prefix('backstage')->middleware('setActiveCampaign')->group(function () {
         Route::group(['middleware' => ['redirectIfNoActiveCampaign']], function () {
 
             Route::resource('prizes', 'PrizesController');
-            Route::resource('games', 'GamesController');
+            Route::post('export', 'GamesController@store')->name('games.export');
 
         });
+
+        // Games
+        Route::resource('games', 'GamesController'); //export
 
     });
 });

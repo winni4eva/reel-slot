@@ -27,6 +27,7 @@ class GamesController extends BackstageController
      */
     public function index()
     {
+        logger('Redireting TO Index Games');
         return view('backstage.games.index');
     }
 
