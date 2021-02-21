@@ -15,7 +15,7 @@ class AddSumPointsToGamesTable extends Migration
     {
         Schema::table('games', function (Blueprint $table) {
             $table->integer('sum_of_points')->after('revealed_at')->default(0);
-            $table->integer('allowed_spins')->after('sum_of_points');
+            $table->integer('allowed_spins')->after('sum_of_points')->default(0);
             $table->foreign('campaign_id')
                 ->references('id')
                 ->on('campaigns')

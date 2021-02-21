@@ -4,6 +4,7 @@ use App\Models\Campaign;
 use App\Models\Prize;
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Database\Seeders\GamesTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -112,6 +113,9 @@ class DatabaseSeeder extends Seeder
                 'startDate' => $start,
                 'endDate' => $end,
             ],
+        ]);
+        $this->call([
+            GamesTableSeeder::class,
         ]);
     }
 }

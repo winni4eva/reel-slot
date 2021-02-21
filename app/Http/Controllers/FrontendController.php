@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Campaign;
+use App\Models\Game;
 use Facade\App\Services\Payline\PaylineService;
 
 class FrontendController extends Controller
 {
     public function loadCampaign(Campaign $campaign)
     {
-        logger('Am In Slug');
-        $game = null;
-
+        
+        $game = Game::where(['campaign_id' => $campaign->id])->first();
+        logger($game);
         return view('frontend.index')
             ->with('data', $game);
     }
