@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Models\Game;
+use App\Models\Symbol;
 use Facades\App\Services\Payline\PaylineService;
 use Facades\App\Services\ReelSlotGenerator\ReelSlotGeneratorService;
 
@@ -23,17 +24,28 @@ class FrontendController extends Controller
       return view('frontend.placeholder');
     }
 
-    private function generate(array $symbols, $columns = 5, $rows = 3): array 
+    public function store() 
     {
-        $reel = [];
-        for ($i=0; $i < $rows; $i++) { 
-            $myRowArray = [];
-            for ($j=0; $j < $columns; $j++) { 
-                array_push($myRowArray, $symbols[rand(0, $columns - 1)]);
+        $reels = unserialize(request()->get('reels'));
+        $campaignId = collect($reels)->first()[0]['campaign_id'] ?? false;
+        $message = '';
+
+        if ($campaignId) {
+            $campaignSymbols = Symbol::where('campaign_id', $campaignId)->get('id')->toArray();
+            $flattennedSymbols = collect($campaignSymbols)->flatten()->all();
+
+            $matchedPayline = PaylineService::detectPayLine($reels, $flattennedSymbols);
+
+            if ($matchedPayline) {
+                $message .= 'Congratulation you won';
+            } else {
+                $message .= 'Sorry better luck next time';
             }
-            array_push($reel, $myRowArray);
+        } else {
+            $message .= 'Sorry better luck next time';
         }
-        return $reel;
+
+        return view('frontend.placeholder')->with(compact('message'));
     }
 
 }

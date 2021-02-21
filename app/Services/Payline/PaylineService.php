@@ -31,25 +31,22 @@ class PaylineService
         return false;
     }
 
-    protected function allRowsMatchSymbol($reels, $symbolId, $columns, $rows) {
-        $rowCount = count($rows);
-        $columnCount = count($columns);
-        for ($i=0; $i < $rowCount; $i++) { 
+    protected function allRowsMatchSymbol(array $reels, int $symbolId, int $columns, int $rows): bool {
+        for ($i=0; $i < $rows; $i++) { 
             $matchedSymbols = [];
-            for ($j=0; $j < $columnCount; $j++) { 
+            for ($j=0; $j < $columns; $j++) { 
                 if ($reels[$i][$j]['id'] == $symbolId) {
                     array_push($matchedSymbols, $symbolId);
                 }
             }
-            if (count($matchedSymbols) == $columnCount) {
+            if (count($matchedSymbols) == $columns) {
                 return true;
             }
         }
         return false;
     }
 
-    protected function diagonalArrowRowsMatchSymbol($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') {
-        $rowCount = count($rows);
+    protected function diagonalArrowRowsMatchSymbol(array $reels, int $symbolId, int $columns, int $rows, string $arrowPosition = 'bottom') {
         $leftDiagonal = [];
         $rightDiagonal = [];
         if (strtolower($arrowPosition) === 'up') {
@@ -57,7 +54,7 @@ class PaylineService
             //$reels = collect($reels)->reverse()->all();
         }
 
-        for ($i=0; $i < $rowCount; $i++) {
+        for ($i=0; $i < $rows; $i++) {
             $colIndex = 0;
             array_push($leftDiagonal, $reels[$i][$colIndex]);
             array_push($rightDiagonal, $reels[$i][($columns-($i+1))]);
@@ -79,7 +76,7 @@ class PaylineService
 
     protected function symbolsFormAnUmbrellaShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
     {
-        $rowCount = count($rows) - 1;
+        $rowCount = $rows - 1;
         $matchedSymbols = [];
         $columnCount = $columns - 1;
         if (strtolower($arrowPosition) === 'up') {

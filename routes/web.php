@@ -40,4 +40,5 @@ Route::prefix('backstage')->middleware('setActiveCampaign')->group(function () {
 });
 
 Route::get('/', 'FrontendController@placeholder');
+Route::post('/save', 'FrontendController@store')->name('save');
 Route::get('{campaign:slug}', 'FrontendController@loadCampaign');
