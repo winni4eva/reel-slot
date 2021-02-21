@@ -9,6 +9,7 @@ class FrontendController extends Controller
 {
     public function loadCampaign(Campaign $campaign)
     {
+        logger('Am In Slug');
         $game = null;
 
         return view('frontend.index')

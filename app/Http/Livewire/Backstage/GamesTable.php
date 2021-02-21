@@ -36,10 +36,7 @@ class GamesTable extends TableComponent
                 'sort' => true,
             ],
         ];
-        $data = Game::filter()
-                ->orderBy($this->sortField, $this->sortAsc ? 'DESC' : 'ASC')
-                ->paginate($this->perPage);
-        logger($data);
+        
         return view('livewire.backstage.table', [
             'columns' => $columns,
             'resource' => 'games',

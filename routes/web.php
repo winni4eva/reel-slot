@@ -39,5 +39,5 @@ Route::prefix('backstage')->middleware('setActiveCampaign')->group(function () {
     });
 });
 
-Route::get('{campaign:slug}', 'FrontendController@loadCampaign');
 Route::get('/', 'FrontendController@placeholder');
+Route::get('{campaign:slug}', 'FrontendController@loadCampaign');

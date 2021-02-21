@@ -4,7 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
-
+use App\Models\Campaign;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -33,6 +33,8 @@ class RouteServiceProvider extends ServiceProvider
         //
 
         parent::boot();
+
+        Route::model('campaign', Campaign::class);
     }
 
     /**
