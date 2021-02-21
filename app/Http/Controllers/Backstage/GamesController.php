@@ -50,8 +50,20 @@ class GamesController extends BackstageController
      */
     public function store(Request $request)
     {
-        logger('Game created successfully');
-        logger($request->all());
+        $campaign = Campaign::find(session('activeCampaign'));
+        $prize = Prize::where(['campaign_id' => $campaign->id])
+            ->orderByRaw('RAND()')
+            ->first();
+        
+        Game::firstOrCreate([
+            'campaign_id' => $campaign->id, 
+            'prizeId' => $prize->id, 
+            'account' => $request->get('a'),
+            'revealed_at' => Carbon::now($campaign->timezone)->toDayDateTimeString(),
+            'allowed_spins' => $request->get('spins')
+        ]);
+
+        return view('backstage.games.index');
     }
 
     /**

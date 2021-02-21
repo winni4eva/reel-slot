@@ -11,7 +11,7 @@ class PaylineService
         //
     }
 
-    private function detectPayLine(array $reels, array $symbolIds, $columns = 5, $rows = 3) 
+    public function detectPayLine(array $reels, array $symbolIds, $columns = 5, $rows = 3) 
     {
         $symblosCount = count($symbolIds);
         
@@ -33,9 +33,10 @@ class PaylineService
                 return true;
             }
         }
+        return false;
     }
 
-    private function allRowsMatchSymbol($reels, $symbolId, $columns, $rows) {
+    protected function allRowsMatchSymbol($reels, $symbolId, $columns, $rows) {
         $rowCount = count($rows);
         $columnCount = count($columns);
         for ($i=0; $i < $rowCount; $i++) { 
@@ -52,7 +53,7 @@ class PaylineService
         return false;
     }
 
-    private function diagonalArrowRowsMatchSymbol($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') {
+    protected function diagonalArrowRowsMatchSymbol($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') {
         $rowCount = count($rows);
         $leftDiagonal = [];
         $rightDiagonal = [];
@@ -81,7 +82,7 @@ class PaylineService
         return false;
     }
 
-    private function symbolsFormAnUmbrellaShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
+    protected function symbolsFormAnUmbrellaShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
     {
         $rowCount = count($rows) - 1;
         $matchedSymbols = [];
@@ -118,7 +119,7 @@ class PaylineService
         return false;
     }
 
-    private function symbolsFormAZeeShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
+    protected function symbolsFormAZeeShape($reels, $symbolId, $columns, $rows, $arrowPosition = 'bottom') 
     {
         $rowCount = count($rows) - 1;
         $matchedSymbols = [];

@@ -11,7 +11,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <link href="{{ mix('/css/backstage.css') }}" rel="stylesheet">
-
+    <style>
+        button.createGame {
+            color: hotpink;
+        }
+    </style>
     @livewireStyles
 
 </head>
@@ -45,11 +49,11 @@
         <div class="col-span-6">
             @if($activeCampaign)
                 {{ $activeCampaign->name }}<br>
-                <a 
-                    href="{{ secure_url($activeCampaign->slug.'?a='. auth()->user()->name . '&spins=4') }}" 
-                    target="_blank" 
-                    class="text-xs">{{ secure_url($activeCampaign->slug.'?a='. auth()->user()->name . '&spins=4') }}
-                </a>
+                {!! Form::open(['route' => $activeCampaign->slug]) !!}
+                    {{ Form::hidden('a', auth()->user()->name) }}
+                    {{ Form::hidden('spins', 4) }}
+                    <button type="submit" class="text-xs createGame">create game</button>
+                {!! Form::close() !!}
             @endif
         </div>
         <div class="col-span-6 text-right">

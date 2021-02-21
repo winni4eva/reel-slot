@@ -14,11 +14,16 @@ class AddSumPointsToGamesTable extends Migration
     public function up()
     {
         Schema::table('games', function (Blueprint $table) {
-            $table->integer('sum_of_points');
-            $table->integer('allowed_spins');
+            $table->integer('sum_of_points')->after('revealed_at')->default(0);
+            $table->integer('allowed_spins')->after('sum_of_points');
             $table->foreign('campaign_id')
                 ->references('id')
                 ->on('campaigns')
+                ->onDelete('cascade')
+                ->onUpdate('cascade');
+            $table->foreign('prizeId')
+                ->references('id')
+                ->on('prizes')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
         });
@@ -33,6 +38,7 @@ class AddSumPointsToGamesTable extends Migration
     {
         Schema::table('games', function (Blueprint $table) {
             $table->dropForeign('games_campaign_id_foreign');
+            $table->dropForeign('prizes_prizeId_foreign');
             $table->dropColumn('sum_of_points');
             $table->dropColumn('allowed_spins');
         });
