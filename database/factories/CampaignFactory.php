@@ -13,5 +13,6 @@ $factory->define(Campaign::class, function (Faker $faker) {
         'segmentation' => $faker->boolean,
         'starts_at' => now()->startOfDay()->format('d-m-Y H:i'),
         'ends_at' => now()->addMonth()->endOfDay()->format('d-m-Y H:i:s'),
+        'slug' => 'backstage.games.store',
     ];
 });
