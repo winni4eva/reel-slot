@@ -5,6 +5,7 @@ use App\Models\Prize;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Database\Seeders\GamesTableSeeder;
+use Database\Seeders\SymbolsTableSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -115,6 +116,7 @@ class DatabaseSeeder extends Seeder
             ],
         ]);
         $this->call([
+            SymbolsTableSeeder::class,
             GamesTableSeeder::class,
         ]);
     }

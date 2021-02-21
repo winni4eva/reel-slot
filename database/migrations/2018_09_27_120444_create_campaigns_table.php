@@ -20,6 +20,8 @@ class CreateCampaignsTable extends Migration
             $table->timestamp('start_date')->nullable(); //campaign can be used (games played on it) from this date onwards
             $table->timestamp('end_date')->nullable(); //campaign can be used until this date
             $table->timestamps();
+
+            $table->unique(['name']);
         });
     }
 
