@@ -38,7 +38,7 @@ class AddSumPointsToGamesTable extends Migration
     {
         Schema::table('games', function (Blueprint $table) {
             $table->dropForeign('games_campaign_id_foreign');
-            $table->dropForeign('prizes_prizeId_foreign');
+            $table->dropForeign('games_prizeId_foreign');
             $table->dropColumn('sum_of_points');
             $table->dropColumn('allowed_spins');
         });

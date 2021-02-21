@@ -22,7 +22,7 @@ class CreateGamesTable extends Migration
             // when the game has been played - it can be different than created_at
             $table->timestamps();
 
-            $table->index('id', 'default_index');
+            $table->index(['id', 'revealed_at', 'account']);
         });
     }
 
