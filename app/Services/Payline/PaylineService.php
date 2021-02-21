@@ -1,15 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
-
-use App\Services\Payline;
+namespace App\Services\Payline;
 
 class PaylineService
 {   
-    public function __construct()
-    {
-        //
-    }
+    public function __construct(){}
 
     public function detectPayLine(array $reels, array $symbolIds, $columns = 5, $rows = 3) 
     {

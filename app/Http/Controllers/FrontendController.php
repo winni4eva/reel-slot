@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Campaign;
 use App\Models\Game;
-use Facade\App\Services\Payline\PaylineService;
+use Facades\App\Services\Payline\PaylineService;
+use Facades\App\Services\ReelSlotGenerator\ReelSlotGeneratorService;
 
 class FrontendController extends Controller
 {
     public function loadCampaign(Campaign $campaign)
     {
+        $symbols = $campaign->load('symbols')->symbols()->get()->toArray();
+        $game = ReelSlotGeneratorService::generate($symbols);
         
-        $game = Game::where(['campaign_id' => $campaign->id])->first();
-        logger($game);
         return view('frontend.index')
             ->with('data', $game);
     }

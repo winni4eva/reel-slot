@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Symbol;
 
 class Campaign extends Model
 {
@@ -25,5 +26,10 @@ class Campaign extends Model
                 ->orWhere('timezone', 'like', '%'.$query.'%')
                 ->orWhere('starts_at', 'like', '%'.$query.'%')
                 ->orWhere('ends_at', 'like', '%'.$query.'%');
+    }
+
+    public function symbols()
+    {
+        return $this->hasMany(Symbol::class);
     }
 }
