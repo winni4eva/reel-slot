@@ -23,16 +23,16 @@
         <base href="/" />
 
         <script crossorigin="anonymous" src="https://polyfill.io/v3/polyfill.min.js?flags=gated&features=default%2CMutationObserver%2CString.prototype.padStart%2Cconsole.info"></script>
-        {{-- <script>
+        <script>
             var config = {!! $config !!};
-        </script> --}}
+        </script>
     </head>
 
     <body style="height: 100%; width: 100%">
       <div style="padding-top: 10%"></div>
       <livewire:counter />
       
-      {{-- <script type="text/javascript" src="{{ asset('js/game.js') }}"></script> --}}
+      <script type="text/javascript" src="{{ asset('js/game.js') }}"></script>
 
     </body>
 </html>

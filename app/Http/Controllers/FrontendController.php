@@ -20,37 +20,7 @@ class FrontendController extends Controller
 
     public function placeholder()
     {
-      //symbol, point, weight
-      $symbols = [
-        [
-          'id' => 1,
-          'name' => 'Mango',
-          'image_url' => '/public/images/mango.jpg'
-        ],
-        [
-          'id' => 2,
-          'name' => 'Banana',
-          'image_url' => '/public/images/mango.jpg'
-        ],
-        [
-          'id' => 3,
-          'name' => 'Pawpaw',
-          'image_url' => '/public/images/mango.jpg'
-        ],
-        [
-          'id' => 4,
-          'name' => 'Apple',
-          'image_url' => '/public/images/mango.jpg'
-        ],
-        [
-          'id' => 5,
-          'name' => 'Orange',
-          'image_url' => '/public/images/mango.jpg'
-        ]
-      ];
-
-      return view('frontend.placeholder')
-        ->with('reel', $this->generate($symbols));
+      return view('frontend.placeholder');
     }
 
     private function generate(array $symbols, $columns = 5, $rows = 3): array 
