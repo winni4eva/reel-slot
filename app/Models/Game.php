@@ -7,39 +7,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
-    protected $fillable = ['campaign_id', 'prizeId', 'account','revealed_at', 'allowed_spins'];
+    protected $fillable = ['campaign_id', 'prizeId', 'account', 'revealed_at', 'allowed_spins'];
 
     protected $dates = [
         'revealed_at',
     ];
 
-    public static function filter()
+    public static function filter($search)
     {
         $query = self::query();
         $campaign = Campaign::find(session('activeCampaign'));
+        if ($search) {
+            $query = $query->where('account', 'LIKE', "%$search%")
+                        ->orWhere('prizeId', '=', "%$search%");
+            if (self::verifyDate($search)) {
+                $query = $query->orWhereRaw('HOUR(revealed_at) >= '."%$search%");
+            }
+        }
         if ($campaign) {
-            self::filterDates($query, $campaign);
-
-            if ($data = request('filter1')) {
-                $query->where('account', 'like', $data.'%');
-            }
-            if ($data = request('filter2')) {
-                $query->where('prizeId', $data);
-            }
-
-            if ($data = request('filter3')) {
-                $query->whereRaw('HOUR(revealed_at) >= '.$data);
-            }
-            if ($data = request('filter4')) {
-                $query->whereRaw('HOUR(revealed_at) <= '.$data);
-            }
-
-            $query->leftJoin('prizes', 'prizes.id', '=', 'games.prizeId')
+            //self::filterDates($query, $campaign);
+            $query = $query->leftJoin('prizes', 'prizes.id', '=', 'games.prizeId')
                 ->select('games.id', 'account', 'prizeId', 'revealed_at', 'prizes.title')
                 ->where('games.campaign_id', $campaign->id);
         }
         return $query;
-
     }
 
     private static function filterDates($query, $campaign): void
@@ -62,6 +53,19 @@ class Game extends Model
     public function prize()
     {
         return $this->belongsTo(Prize::class);
+    }
+
+    // Needs to be moved to a utility class
+    private static function verifyDate($date, $strict = true)
+    {
+        $dateTime = \DateTime::createFromFormat('m/d/Y', $date);
+        if ($strict) {
+            $errors = \DateTime::getLastErrors();
+            if (!empty($errors['warning_count'])) {
+                return false;
+            }
+        }
+        return $dateTime !== false;
     }
 
 

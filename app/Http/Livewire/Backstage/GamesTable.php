@@ -9,6 +9,10 @@ class GamesTable extends TableComponent
 {
     public $sortField = 'revealed_at';
 
+    public $hasSearch = true;
+
+    protected $recordlimit = 10;
+
     public function render()
     {
         $columns = [
@@ -40,8 +44,8 @@ class GamesTable extends TableComponent
         return view('livewire.backstage.table', [
             'columns' => $columns,
             'resource' => 'games',
-            'rows' => Game::filter()
-                ->take($this->perPage)
+            'rows' => Game::filter($this->search)
+                ->take($this->recordlimit)
                 ->orderBy($this->sortField, $this->sortAsc ? 'DESC' : 'ASC')
                 ->select('account', 'prizeId', 'account', 'revealed_at')
                 ->paginate($this->perPage),
