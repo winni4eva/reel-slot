@@ -12,7 +12,10 @@ class FrontendController extends Controller
 {
     public function loadCampaign(Campaign $campaign)
     {
-        $symbols = $campaign->load('symbols')->symbols()->get()->toArray();
+        $symbols = $campaign->load('symbols')
+            ->symbols()
+            ->get(['id', 'image'])
+            ->toArray();
         $game = ReelSlotGeneratorService::generate($symbols);
         
         return view('frontend.index')

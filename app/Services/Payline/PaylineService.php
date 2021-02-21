@@ -115,7 +115,7 @@ class PaylineService
     {
         $rowCount = count($rows) - 1;
         $matchedSymbols = [];
-        $columnCount = $columns - 1;
+        
         if (strtolower($arrowPosition) === 'up') {
             $reels = array_reverse($reels);
             //$reels = collect($reels)->reverse()->all();

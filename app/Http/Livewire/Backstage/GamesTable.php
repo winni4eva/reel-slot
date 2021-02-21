@@ -26,7 +26,7 @@ class GamesTable extends TableComponent
 
             [
                 'title' => 'title',
-                'attribute' => 'title',
+                'attribute' => 'account',
                 'sort' => true,
             ],
 
@@ -41,7 +41,9 @@ class GamesTable extends TableComponent
             'columns' => $columns,
             'resource' => 'games',
             'rows' => Game::filter()
+                ->take($this->perPage)
                 ->orderBy($this->sortField, $this->sortAsc ? 'DESC' : 'ASC')
+                ->select('account', 'prizeId', 'account', 'revealed_at')
                 ->paginate($this->perPage),
         ]);
     }
