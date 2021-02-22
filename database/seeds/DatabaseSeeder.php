@@ -32,6 +32,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Darts',
             'start_date' => $start,
             'end_date' => $end,
+            'slug' => 'backstage.games.store',
         ]);
 
         $campaign = Campaign::create([
@@ -39,6 +40,7 @@ class DatabaseSeeder extends Seeder
             'name' => '5 Reels Slots',
             'start_date' => $start,
             'end_date' => $end,
+            'slug' => 'backstage.games.store',
         ]);
 
         Prize::insert([
